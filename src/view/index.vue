@@ -7,7 +7,7 @@
   export default {
     created () {
       setTimeout(() => {
-        this.$router.push({name: 'topics'})
+        this.$router.push({name: 'topics', params: {type: 'all'}})
       }, 2000)
     }
   }

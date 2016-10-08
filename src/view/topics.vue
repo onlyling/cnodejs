@@ -5,7 +5,7 @@
           <!-- 标题栏 -->
           <header class="bar bar-nav">
               <a class="icon icon-menu pull-left" v-on:click="toggleMenu"></a>
-              <h1 class="title">{{title}}</h1>
+              <h1 class="title">{{query | getTitleStr}}</h1>
           </header>
 
           <!-- 这里是页面内容区 -->
@@ -51,11 +51,13 @@
           <div class="list-group">
             <ul>
               <li v-for="item in menu">
-                <div class="item-content" v-on:click="changeChannel(item)">
-                  <div class="item-inner">
-                    <div class="item-title">{{item.text}}</div>
+                <router-link :to="{name: 'topics', params: {type: item.query}}">
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">{{item.text}}</div>
+                    </div>
                   </div>
-                </div>
+                </router-link>
               </li>
             </ul>
           </div>
@@ -68,12 +70,12 @@
 <script>
   import api from '../api'
   import { mapActions } from 'vuex'
+  import store from 'store'
   export default {
     data () {
       return {
         list: [],
         openMenu: false,
-        title: '全部',
         query: 'all',
         page: 1,
         menu: [{
@@ -98,7 +100,26 @@
       }
     },
     mounted () {
-      this.getData()
+      var self = this
+      const _local = store.get('list') || {}
+      self.page = _local.page || 1
+      self.list = _local.list || []
+      self.query = self.$route.params.type
+      if (!!!self.list.length) {
+        self.getData()
+      } else {
+        self.list.forEach((obj) => {
+          self.updateTopic(obj)
+        })
+      }
+    },
+    watch: {
+      $route (to, from) {
+        this.openMenu = false
+        this.query = this.$route.params.type
+        this.page = 1
+        this.getData()
+      }
     },
     methods: {
       ...mapActions([
@@ -127,14 +148,16 @@
         this.openMenu = !this.openMenu
       },
       changeChannel (obj) {
-        this.title = obj.text
-        this.query = obj.query
         this.page = 1
         this.toggleMenu()
-        this.getData()
+        this.$router.push({name: 'topics', query: {type: obj.query}})
       },
       jump (id) {
         this.openMenu = false
+        store.set('list', {
+          page: this.page - 1,
+          list: this.list
+        })
         this.$router.push({name: 'topic', params: {id: id}})
       }
     }

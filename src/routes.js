@@ -8,7 +8,7 @@ export default [{
   name: 'index',
   component: resolve => require(['./view/index.vue'], resolve)
 }, {
-  path: '/topics',
+  path: '/topics/:type',
   name: 'topics',
   component: resolve => require(['./view/topics.vue'], resolve)
 }, {
