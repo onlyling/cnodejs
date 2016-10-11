@@ -12,7 +12,7 @@
           <div class="content">
           
               <div class="card" v-for="item in list">
-                <div class="card-content" v-on:click="jump(item.id)">
+                <div class="card-content" @click="jump(item.id)">
                   <div class="list-block media-list">
                     <ul>
                       <li class="item-content">
@@ -36,7 +36,7 @@
               </div>
 
               <div class="content-block">
-                <p><a class="button button-fill" v-on:click="getData">加载更多</a></p>
+                <p><a class="button button-fill" @click="getData">加载更多</a></p>
               </div>
 
           </div>
@@ -47,21 +47,7 @@
           <p>你可以在这里放用户设置页面</p>
           <p><a v-on:click="toggleMenu">关闭</a></p>
         </div>
-        <div class="list-block contacts-block">
-          <div class="list-group">
-            <ul>
-              <li v-for="item in menu">
-                <router-link :to="{name: 'topics', params: {type: item.query}}">
-                  <div class="item-content">
-                    <div class="item-inner">
-                      <div class="item-title">{{item.text}}</div>
-                    </div>
-                  </div>
-                </router-link>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <side-menu></side-menu>
       </div>
     </div>
     <router-view></router-view>
@@ -69,34 +55,19 @@
 </template>
 <script>
   import api from '../api'
+  import sideMenu from '../component/menu'
   import { mapActions } from 'vuex'
   import store from 'store'
   export default {
+    components: {
+      sideMenu
+    },
     data () {
       return {
         list: [],
         openMenu: false,
         query: 'all',
-        page: 1,
-        menu: [{
-          text: '全部',
-          query: 'all'
-        }, {
-          text: '精华',
-          query: 'good'
-        }, {
-          text: '分享',
-          query: 'share'
-        }, {
-          text: '问答',
-          query: 'ask'
-        }, {
-          text: '招聘',
-          query: 'job'
-        }, {
-          text: '分享',
-          query: 'share'
-        }]
+        page: 1
       }
     },
     mounted () {
