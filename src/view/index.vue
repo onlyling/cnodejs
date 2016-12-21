@@ -7,8 +7,8 @@
   export default {
     created () {
       setTimeout(() => {
-        this.$router.push({name: 'topics', params: {type: 'all'}})
-      }, 2000)
+        this.$router.push({name: 'topics', query: {type: 'all'}})
+      }, 1500)
     }
   }
 </script>

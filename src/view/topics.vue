@@ -1,57 +1,42 @@
 <template>
-  <div>
-    <div class="page-group" :class="{'with-panel-left-reveal': openMenu}">
-        <div class="page page-current">
-          <!-- 标题栏 -->
-          <header class="bar bar-nav">
-              <a class="icon icon-menu pull-left" v-on:click="toggleMenu"></a>
-              <h1 class="title">{{query | getTitleStr}}</h1>
-          </header>
+  <ms-pages :class="{'with-panel-left-reveal': openMenu}">
+    <ms-page>
+      <!-- 标题栏 -->
+      <header class="bar bar-nav">
+        <a class="icon icon-menu pull-left" v-on:click="toggleMenu"></a>
+        <h1 class="title">{{query | getTitleStr}}</h1>
+      </header>
 
-          <!-- 这里是页面内容区 -->
-          <div class="content">
-          
-              <div class="card" v-for="item in list">
-                <div class="card-content" @click="jump(item.id)">
-                  <div class="list-block media-list">
-                    <ul>
-                      <li class="item-content">
-                        <div class="item-media">
-                          <img :src="item.author.avatar_url" width="40">
-                        </div>
-                        <div class="item-inner">
-                          <div class="item-title-row">
-                            <div class="item-title"><span class="title-icon" :class="item.tab">{{item.tab | getTabStr(item.good, item.top)}}</span>{{item.title}}</div>
-                          </div>
-                          <div class="item-subtitle">{{item.author.loginname}}</div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="card-footer">
-                  <span>{{item.create_at | getDate}}</span>
-                  <span>{{item.reply_count}} / {{item.visit_count}}</span>
-                </div>
-              </div>
+      <!-- 这里是页面内容区 -->
+      <div class="content">
 
-              <div class="content-block">
-                <p><a class="button button-fill" @click="getData">加载更多</a></p>
-              </div>
-
-          </div>
-      </div>
-      <div class="panel panel-left panel-reveal theme-dark">
-        <div class="content-block">
-          <p>这是一个侧栏</p>
-          <p>你可以在这里放用户设置页面</p>
-          <p><a v-on:click="toggleMenu">关闭</a></p>
+        <div class="list-block media-list">
+          <ul>
+            <ms-item v-for="item in list"
+              :link="{name: 'topic', params: {id: item.id}}"
+              :imgUrl="item.author.avatar_url"
+              :title="item.title"
+              :subtitle="item.author.loginname"
+              :text="getContent(item.content)"
+              ></ms-item>
+          </ul>
         </div>
-        <side-menu></side-menu>
+
+        <div class="content-block">
+          <p><a class="button button-fill" @click="getData">加载更多</a></p>
+        </div>
+
       </div>
+    </ms-page>
+    <div class="panel panel-left panel-reveal theme-dark">
+      <div class="content-block">
+        <p>这是一个侧栏</p>
+        <p>你可以在这里放用户设置页面</p>
+        <p><a v-on:click="toggleMenu">关闭</a></p>
+      </div>
+      <side-menu></side-menu>
     </div>
-    <router-view></router-view>
-  </div>
+  </ms-pages>
 </template>
 <script>
   import api from '../api'
@@ -75,7 +60,7 @@
       const _local = store.get('list') || {}
       self.page = _local.page || 1
       self.list = _local.list || []
-      self.query = self.$route.params.type
+      self.query = self.$route.query.type
       if (!!!self.list.length) {
         self.getData()
       } else {
@@ -87,7 +72,7 @@
     watch: {
       $route (to, from) {
         this.openMenu = false
-        this.query = this.$route.params.type
+        this.query = this.$route.query.type
         this.page = 1
         this.getData()
       }
@@ -122,6 +107,9 @@
         this.page = 1
         this.toggleMenu()
         this.$router.push({name: 'topics', query: {type: obj.query}})
+      },
+      getContent (html) {
+        return html.replace(/<\/?[^>]*>/g,'').replace(/\s/g, '')
       },
       jump (id) {
         this.openMenu = false

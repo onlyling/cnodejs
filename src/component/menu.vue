@@ -3,7 +3,7 @@
     <div class="list-group">
       <ul>
         <li v-for="item in menu">
-          <router-link :to="{name: 'topics', params: {type: item.query}}">
+          <router-link :to="{name: 'topics', query: {type: item.query}}">
             <div class="item-content">
               <div class="item-inner">
                 <div class="item-title">{{item.text}}</div>
