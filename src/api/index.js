@@ -12,5 +12,8 @@ export default {
   },
   getTopics (data) {
     return types.getTopics.get(data)
+  },
+  getTopic (id) {
+    return types.getTopic.get({id})
   }
 }

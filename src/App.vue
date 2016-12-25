@@ -55,7 +55,7 @@
     -webkit-transform: translate3d(0, 0, 0);
   }
   
-  ..slide-left-leave-active {
+  .slide-left-leave-active {
     transition: all .4s ease;
     opacity: 0.9;
     transform: translate3d(100%, 0, 0);

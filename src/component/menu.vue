@@ -3,11 +3,13 @@
     <div class="list-group">
       <ul>
         <li v-for="item in menu">
-          <router-link :to="{name: 'topics', query: {type: item.query}}">
-            <div class="item-content">
-              <div class="item-inner">
-                <div class="item-title">{{item.text}}</div>
-              </div>
+          <router-link
+            class="item-content"
+            :to="{name: 'topics', query: {type: item.query}}"
+            tag="div"
+            >
+            <div class="item-inner">
+              <div class="item-title">{{item.text}}</div>
             </div>
           </router-link>
         </li>
@@ -42,3 +44,6 @@
     }
   }
 </script>
+<style>
+  .list-block .item-content.active{ background-color: #2b2b2b; }
+</style>

@@ -8,3 +8,6 @@
     name: 'ms-pages'
   }
 </script>
+<style>
+  .page-group { z-index: 2000 }
+</style>

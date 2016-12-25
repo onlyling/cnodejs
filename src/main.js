@@ -22,10 +22,12 @@ for (let k in filter) {
 import msPages from './component/pages.vue'
 import msPage from './component/page.vue'
 import msItem from './component/item.vue'
+import msBarHeader from './component/barHeader.vue'
 
 Vue.component(msPages.name, msPages)
 Vue.component(msPage.name, msPage)
 Vue.component(msItem.name, msItem)
+Vue.component(msBarHeader.name, msBarHeader)
 
 const router = new VueRouter({
   routes // short for routes: routes
