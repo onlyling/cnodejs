@@ -23,11 +23,11 @@ Vue.http.interceptors.push((request, next) => {
   next()
 })
 
-export const loginResource = Vue.resource('login.json')
+export const loginResource = Vue.resource('accesstoken')
 
-export const logoutResource = Vue.resource('logout.json')
-
-export const userResource = Vue.resource('getUserInfo.json')
+export const userResource = (user) => {
+  return Vue.resource('user/' + user)
+}
 
 export const getTopics = Vue.resource('topics')
 

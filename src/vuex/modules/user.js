@@ -1,17 +1,20 @@
+import store from 'store'
+
 import * as types from '../mutation-types'
 
 // initial state
 const state = {
-  userInfo: {}
+  userInfo: store.get('userInfo') || {}
 }
 
-console.log(types)
+
 
 // mutations
 const mutations = {
-  // [types.SET_USERINFO] (state, userInfo) {
-  //   this.userInfo = userInfo
-  // }
+  [types.SET_USERINFO] (state, userInfo) {
+    state.userInfo = userInfo
+    store.set('userInfo', userInfo)
+  }
 }
 
 export default {

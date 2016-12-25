@@ -8,6 +8,13 @@ export default [{
   name: 'index',
   component: resolve => require(['./view/index.vue'], resolve)
 }, {
+  path: '/login',
+  name: 'login',
+  component: resolve => require(['./view/login.vue'], resolve),
+  meta: {
+    goback: true
+  }
+}, {
   path: '/topics',
   name: 'topics',
   component: resolve => require(['./view/topics.vue'], resolve)

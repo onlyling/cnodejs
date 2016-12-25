@@ -29,20 +29,28 @@
 
       </div>
     </ms-page>
+
     <div class="panel panel-left panel-reveal theme-dark">
+      <div class="topics-panel-close">
+        <span class="icon icon-left" @click="toggleMenu"></span>
+      </div>
       <div class="content-block">
-        <p>这是一个侧栏</p>
-        <p>你可以在这里放用户设置页面</p>
-        <p><a @click="toggleMenu">关闭</a></p>
+        <div v-if="userInfo.loginname" class="text-center">
+          <img class="topics-panel-avatar" :src="userInfo.avatar_url" >
+          <p style="margin: 0;">{{userInfo.loginname}}</p>
+        </div>
+        <p v-else @click="() => {$router.push({name: 'login', query: { redirect: $route.fullPath }})}"><span class="icon icon-me"></span>登录</p>
       </div>
       <side-menu></side-menu>
     </div>
+
   </ms-pages>
 </template>
 <script>
   import api from '../api'
   import sideMenu from '../component/menu'
   import { mapActions } from 'vuex'
+  import { mapState } from 'vuex'
   import store from 'store'
   export default {
     components: {
@@ -87,7 +95,7 @@
       var self = this
 
       // 路由离开之前记录一些数据
-      if (to.name === 'topic') {
+      if (to.name === 'topic' || to.name === 'login') {
 
         store.set('query', self.query || 'all')
         store.set('list', self.list)
@@ -98,13 +106,18 @@
       next()
     },
     beforeRouteEnter (to, from, next) {
-      if (from.name !== 'topic') {
+      if (from.name !== 'topic' && from.name !== 'login') {
         store.remove('tab')
         store.remove('list')
         store.remove('page')
         store.remove('scrollTop')
       }
       next()
+    },
+    computed: {
+      ...mapState({
+        userInfo: state => state.user.userInfo
+      })
     },
     methods: {
       ...mapActions([
@@ -224,5 +237,8 @@
   .page-group .panel {
     display: block;
   }
+
+  .topics-panel-close{ position: absolute; right: .5rem; top: .2rem; }
+  .topics-panel-avatar{ width: 6rem; height: 6rem; border-radius: 3rem; }
 
 </style>

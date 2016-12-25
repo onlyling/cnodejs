@@ -1,11 +1,7 @@
 <template>
   <ms-pages>
     <ms-page>
-      <header class="bar bar-nav">
-        <a class="icon icon-left pull-left" @click="back"></a>
-        <a class="icon icon-refresh pull-right"></a>
-        <h1 class="title">主题</h1>
-      </header>
+      <ms-bar-header title="主题" :back="true"></ms-bar-header>
       <div class="content bgfff">
         <div class="content-padded">
           <h2>{{topic.title}}</h2>

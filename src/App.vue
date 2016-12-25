@@ -5,6 +5,36 @@
     </transition>
   </div>
 </template>
+<script>
+  import api from './api'
+  import { mapActions } from 'vuex'
+  import { mapState } from 'vuex'
+  import store from 'store'
+  export default {
+    mounted () {
+      this.getUser()
+    },
+    methods: {
+      ...mapActions([
+        'updateUserInfo'
+      ]),
+      getUser () {
+        api.getUser((store.get('userInfo') || {}).loginname)
+          .then((res) => {
+
+            this.updateUserInfo(res.body.data)
+
+          }, (res) => {
+
+            setTimeout(() => {
+              this.getUser()
+            }, 5 * 60 * 1000)
+
+          })
+      }
+    }
+  }
+</script>
 <style>
 
   #app {
